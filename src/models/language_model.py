@@ -7,3 +7,15 @@ class LanguageModel(AbstractModel):
 
     def __init__(self, data):
         super().__init__(data)
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            # .get() instead of [] to avoid KeyError
+            "name": self.data.get("name"),
+            "acronym": self.data.get("acronym"),
+        }
+
+    @classmethod
+    def list_dicts(cls, query={}):
+        results = cls._collection.find(query, {"_id": 0})
+        return [result for result in results]
